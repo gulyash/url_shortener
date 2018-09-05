@@ -6,12 +6,12 @@ from django.utils import timezone
 
 
 class Url(models.Model):
-    url = models.CharField(
-        max_length=300,
-        help_text='Адрес ресурса',
+    url = models.URLField(
+        verbose_name='Ссылка',
+        max_length=2048
     )
     token = models.CharField(
-        max_length=100,
+        max_length=16,
         help_text='Сокращенная ссылка',
     )
     creation_time = models.DateTimeField(
