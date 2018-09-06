@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
 
+from tokenizer import views
 from tokenizer.views import HomePageView
 
 urlpatterns = [
@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path(r'^(?P<token>[a-zA-Z0-9]+)/$', views.shortcut, name='urls-shortcut'),
 ]

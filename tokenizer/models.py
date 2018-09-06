@@ -14,6 +14,7 @@ class Url(models.Model):
     token = models.CharField(
         max_length=16,
         help_text='Сокращенная ссылка',
+        unique=True
     )
     creation_time = models.DateTimeField(
         verbose_name='Дата создания',

@@ -8,16 +8,49 @@
         <nav class="navbar navbar-default">
             Signed in as <strong>{{ user.username }}</strong>
         </nav>
-        <form>
-            <div class="form-group">
-                <label for="urlInput">URL address</label>
-                <input type="url" class="form-control" id="urlInput" aria-describedby="urlHelp"
-                       placeholder="Enter URL">
-                <small id="urlHelp" class="form-text text-muted">We'll create a short link for your URL.
-                </small>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+
+        <div class="well">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group{% if errors %} has-error{% endif %}">
+                    <label for="urlInput">URL address</label>
+                    <input type="url" class="form-control" id="urlInput" aria-describedby="urlHelp"
+                           placeholder="Enter URL" name="url">
+                    <small id="urlHelp" class="form-text text-muted">We'll create a short link for your URL.
+                    </small>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% if errors %}
+                    <span class="help-block">{{ errors }}</span>
+                {% endif %}
+            </form>
+        </div>
+        {% if url_list %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Long Url</th>
+                    <th>Created</th>
+                    <th>Short Url</th>
+                    <th>Clicks</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for url_item in url_list %}
+                    <tr class="{% if url_item.pk == current %}success{% endif %}">
+                        <td>{{ url_item.url }}</td>
+                        <td>{{ url_item.creation_time }}</td>
+                        <td><a target="_blank"
+                               href="{% url 'urls-shortcut' token=url_item.token %}">{% url 'urls-shortcut' token=url_item.token %}</a>
+                        </td>
+                        <td>{{ url_item.redirect_count }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No urls are available yet.</p>
+        {% endif %}
         <p><a href="{% url 'logout' %}">logout</a></p>
     {% else %}
         <p>You are not logged in</p>
