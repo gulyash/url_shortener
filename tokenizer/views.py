@@ -8,14 +8,14 @@ from django.views.generic.base import TemplateView
 from tokenizer.models import Url
 
 
-class HomePageView(LoginRequiredMixin, TemplateView):
+class HomePageView(TemplateView):
     template_name = 'home.html'
 
     def get(self, request, *args, **kwargs):
-        url_list = Url.objects.filter(user=request.user).order_by('-id')
-        context = {
-            'url_list': url_list,
-        }
+        context = {}
+        if request.user.is_authenticated:
+            url_list = Url.objects.filter(user=request.user).order_by('-id')
+            context['url_list'] = url_list
         return render(request, 'home.html', context)
 
 
