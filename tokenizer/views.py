@@ -43,5 +43,6 @@ def shortcut(request, token):
         request.session.create()
 
     url_item = get_object_or_404(Url, token=token)
-
+    url_item.redirect_count += 1
+    url_item.save()
     return redirect(url_item.url)

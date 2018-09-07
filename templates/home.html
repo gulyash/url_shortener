@@ -43,9 +43,8 @@
 
                         </td>
                         <td>{{ url_item.creation_time }}</td>
-                        <td><a href="{% url 'urls-shortcut' token=url_item.token %}">
-                            http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}
-                            {% url 'urls-shortcut' token=url_item.token %}</a>
+                        <td>
+                            <a href="{% url 'urls-shortcut' token=url_item.token %}">http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{% url 'urls-shortcut' token=url_item.token %}</a>
                         </td>
                         <td>{{ url_item.redirect_count }}</td>
                     </tr>
