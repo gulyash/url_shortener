@@ -10,7 +10,7 @@
         </nav>
 
         <div class="well">
-            <form method="post">
+            <form method="post" action="/tokenizer/">
                 {% csrf_token %}
                 <div class="form-group{% if errors %} has-error{% endif %}">
                     <label for="urlInput">URL address</label>
@@ -38,10 +38,14 @@
                 <tbody>
                 {% for url_item in url_list %}
                     <tr class="{% if url_item.pk == current %}success{% endif %}">
-                        <td>{{ url_item.url }}</td>
+                        <td>
+                            <a href="{{ url_item.url }}">{{ url_item.url }}</a>
+
+                        </td>
                         <td>{{ url_item.creation_time }}</td>
-                        <td><a target="_blank"
-                               href="{% url 'urls-shortcut' token=url_item.token %}">{% url 'urls-shortcut' token=url_item.token %}</a>
+                        <td><a href="{% url 'urls-shortcut' token=url_item.token %}">
+                            http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}
+                            {% url 'urls-shortcut' token=url_item.token %}</a>
                         </td>
                         <td>{{ url_item.redirect_count }}</td>
                     </tr>

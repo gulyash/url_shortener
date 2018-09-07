@@ -14,15 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import re_path, path, include
 
 from tokenizer import views
-from tokenizer.views import HomePageView
+from tokenizer.views import HomePageView, UrlGen
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path(r'^(?P<token>[a-zA-Z0-9]+)/$', views.shortcut, name='urls-shortcut'),
+    path('tokenizer/', UrlGen.as_view()),
+    re_path(r'^(?P<token>[a-zA-Z0-9]+)/$', views.shortcut, name='urls-shortcut'),
 ]
