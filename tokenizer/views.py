@@ -20,6 +20,8 @@ class HomePageView(LoginRequiredMixin, TemplateView):
 
 
 class UrlGen(LoginRequiredMixin, TemplateView):
+    SHORT_URL_LEN = 8
+
     def post(self, request, *args, **kwargs):
         token = self.get_unique_token()
         try:
@@ -31,17 +33,14 @@ class UrlGen(LoginRequiredMixin, TemplateView):
             pass
 
     def get_unique_token(self):
+        tokens = set(Url.objects.all().values_list('token', flat=True))
         while True:
-            token = get_random_string(length=16)
-            if not Url.objects.filter(token=token).exists():
-                break
-        return token
+            token = get_random_string(length=self.SHORT_URL_LEN)
+            if token not in tokens:
+                return token
 
 
 def shortcut(request, token):
-    if not request.session.exists(request.session.session_key):
-        request.session.create()
-
     url_item = get_object_or_404(Url, token=token)
     url_item.redirect_count += 1
     url_item.save()
