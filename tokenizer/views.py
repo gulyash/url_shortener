@@ -1,10 +1,13 @@
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 # Create your views here.
 from django.utils.crypto import get_random_string
+from django.views.generic import FormView
 from django.views.generic.base import TemplateView
 
+from tokenizer.forms import UrlForm
 from tokenizer.models import Url
 
 
@@ -19,18 +22,19 @@ class HomePageView(TemplateView):
         return render(request, 'home.html', context)
 
 
-class UrlGen(LoginRequiredMixin, TemplateView):
+class UrlGen(LoginRequiredMixin, FormView):
     SHORT_URL_LEN = 8
 
     def post(self, request, *args, **kwargs):
-        token = self.get_unique_token()
-        try:
-            url = Url(url=request.POST['url'], user=request.user, token=token)
-            url.full_clean()
-            url.save()
+        form = UrlForm(request.POST)
+        if form.is_valid():
+            token = self.get_unique_token()
+            url, created = Url.objects.get_or_create(user=request.user, **form.cleaned_data)
+            if created:
+                url.token = token
+                url.full_clean()
+                url.save()
             return redirect('home')
-        except ValidationError as e:
-            pass
 
     def get_unique_token(self):
         tokens = set(Url.objects.all().values_list('token', flat=True))
