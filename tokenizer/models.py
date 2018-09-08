@@ -13,7 +13,7 @@ class Url(models.Model):
         max_length=2048
     )
     token = models.CharField(
-        max_length=16,
+        max_length=8,
         help_text='Сокращенная ссылка',
         unique=True
     )
@@ -29,3 +29,6 @@ class Url(models.Model):
         verbose_name='Количество переходов по ссылке',
         default=0
     )
+
+    class Meta:
+        unique_together = ('user', 'url')
