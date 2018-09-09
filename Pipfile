@@ -7,6 +7,8 @@ name = "pypi"
 psycopg2="==2.7.5"
 python-dotenv="==0.9.1"
 django = "==2.1.1"
+gunicorn = "*"
+django-heroku = "*"
 
 [dev-packages]
 
