@@ -88,6 +88,14 @@
             {% endif %}
         </div>
     {% else %}
-        <p class="text-center">You are not logged in.</p>
+        <div class="container justify-content-center">
+            <div class="row justify-content-center mt-4" >
+                <p class="text-center">You are not logged in.</p>
+            </div>
+            <div class="row justify-content-center">
+                {% load static %}
+                <img src="{% static "welcome-to-internet.jpg" %}" alt="My image">
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import re_path, path, include
 
@@ -26,4 +28,4 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('tokenizer/', UrlGen.as_view()),
     re_path(r'^(?P<token>[a-zA-Z0-9]+)/$', views.shortcut, name='urls-shortcut'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
