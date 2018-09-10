@@ -3,7 +3,7 @@ venv/
 .env
 **/__pycache__/
 sent_emails/
-storage/static/admin/js
-storage/static/admin/css
-storage/static/admin/img
-storage/static/admin/fonts
+staticfiles/admin/js
+staticfiles/admin/css
+staticfiles/admin/img
+staticfiles/admin/fonts
